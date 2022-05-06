@@ -4,6 +4,45 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+
+    /*
+
+    https://www.universal-robots.com/articles/ur/interface-communication/modbus-tcp-client-setup/
+    https://www.universal-robots.com/articles/ur/interface-communication/modbus-communication-16357/
+    https://www.universal-robots.com/articles/ur/interface-communication/modbus-server/
+    https://s3-eu-west-1.amazonaws.com/ur-support-site/16377/ModBus%20server%20data.pdf
+    
+    https://www.modbus.org/docs/PI_MBUS_300.pdf
+
+    https://www.wireshark.org/docs/dfref/m/mbtcp.html
+    https://www.linkedin.com/pulse/how-read-modbus-protocol-using-wireshark-matthew-loong
+
+    https://www.vanimpe.eu/2015/12/07/introduction-to-modbus-tcp-traffic/
+        In Wireshark I filter the traffic to Modbus only with
+            tcp.port == 502
+
+    https://www.linkedin.com/pulse/how-read-modbus-protocol-using-wireshark-matthew-loong
+
+    // Modbus function codes 
+    #define MODBUS_FC_READ_COILS                0x01
+    #define MODBUS_FC_READ_DISCRETE_INPUTS      0x02
+    #define MODBUS_FC_READ_HOLDING_REGISTERS    0x03
+    #define MODBUS_FC_READ_INPUT_REGISTERS      0x04
+    #define MODBUS_FC_WRITE_SINGLE_COIL         0x05
+    #define MODBUS_FC_WRITE_SINGLE_REGISTER     0x06
+    #define MODBUS_FC_READ_EXCEPTION_STATUS     0x07
+    #define MODBUS_FC_WRITE_MULTIPLE_COILS      0x0F
+    #define MODBUS_FC_WRITE_MULTIPLE_REGISTERS  0x10
+    #define MODBUS_FC_REPORT_SLAVE_ID           0x11
+    #define MODBUS_FC_MASK_WRITE_REGISTER       0x16
+    #define MODBUS_FC_WRITE_AND_READ_REGISTERS  0x17
+
+    https://control.com/forums/threads/modbus-coil-and-register-question.31155/
+
+    https://www.universal-robots.com/articles/ur/interface-communication/connecting-internal-inputs-and-outputs-io-on-the-robots-controller/
+
+    */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -111,6 +150,14 @@ output:
         }
         
         modbus_ip_address = argv[2];
+     
+        /*   
+        #  https://www.universal-robots.com/articles/ur/interface-communication/modbus-server/
+        #  https://s3-eu-west-1.amazonaws.com/ur-support-site/16377/ModBus%20server%20data.pdf
+        #  test write single coil and read single coil for 
+        #  digital output 0 - 7 starting at address 16 for universal robots:
+        # 16-31 x x x * * Outputs, bits 0-15 [BBBBBBBBTTxxxxxx] x=undef, T=tool, B=box
+        */
         
         modbus_channel = atoi(argv[3]);
         if( modbus_channel < 0 || modbus_channel > 7 ) {

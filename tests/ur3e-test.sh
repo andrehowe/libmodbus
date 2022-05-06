@@ -1,5 +1,12 @@
 #!/bin/sh
 
+
+#  https://www.universal-robots.com/articles/ur/interface-communication/modbus-server/
+#  https://s3-eu-west-1.amazonaws.com/ur-support-site/16377/ModBus%20server%20data.pdf
+#  test write single coil and read single coil for 
+#  digital output 0 - 7 starting at address 16 for universal robots:
+# 16-31 x x x * * Outputs, bits 0-15 [BBBBBBBBTTxxxxxx] x=undef, T=tool, B=box
+
 test_log=test-ur3e.log
 
 rm -f $client_log $test_log
